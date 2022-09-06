@@ -13,7 +13,7 @@ struct adoptiApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            onBoardingScreen()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
