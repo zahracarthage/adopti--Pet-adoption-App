@@ -81,9 +81,9 @@ struct loginScreen: View {
                     .foregroundColor(Color("DarkBlue"))
 
                    
-               
+           
                 
-                NavigationLink(destination: Text("OtherView"), isActive: $isLinkActive) {
+                NavigationLink(destination: SignUp(), isActive: $isLinkActive) {
                     Button(action: {
                         self.isLinkActive = true
                     }) {

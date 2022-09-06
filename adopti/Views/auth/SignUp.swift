@@ -15,9 +15,11 @@ struct SignUp: View {
     @FocusState var focus1: Bool
     @FocusState var focus2: Bool
     @State var showPassword: Bool = false
+    @State var isLinkActive = false
+
     
     var body: some View {
-        NavigationView{
+      //  NavigationView{
             VStack{
                 VStack(alignment: .leading){
                     
@@ -73,7 +75,7 @@ struct SignUp: View {
                 LargeButton(title: "Login", backgroundColor: Color("PrimaryBlue"), foregroundColor: .white, action: {})
                         
                         
-                }
+                }.padding()
                
                 
                 HStack(alignment: .center){
@@ -82,26 +84,35 @@ struct SignUp: View {
                         .font(Font.custom("Poppins-Regular", size: 15))
                         .foregroundColor(Color("DarkBlue"))
 
-                       
-                    Text("Login")
-                        .font(Font.custom("Poppins-SemiBold", size: 15))
-                        .foregroundColor(Color("PrimaryBlue"))
+                   
+                    NavigationLink(destination: loginScreen(), isActive: $isLinkActive) {
+                        Button(action: {
+                            self.isLinkActive = true
+                        }) {
+                            Text("Login")
+                                .font(Font.custom("Poppins-SemiBold", size: 15))
+                                .foregroundColor(Color("PrimaryBlue"))
+                        }
+                    }
+                    
+                  
 
                 }
                 
-                .padding()
+                
                 
              
                 
                 BottomPicture(ImgName: "Bird", ShadowColor: "PrimaryBlue" )
                     .edgesIgnoringSafeArea(.bottom)
                 
-                    
-            }.padding()
-                .navigationTitle("Sign up")
-                .navigationBarTitleDisplayMode(.inline)
+   
             
-        }
+            }
+            .navigationTitle("Sign Up")
+            .navigationBarHidden(true)
+            .padding()
+        
 
     }
 }
