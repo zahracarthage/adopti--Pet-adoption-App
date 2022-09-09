@@ -111,6 +111,7 @@ struct SignUp: View {
             }
             .navigationTitle("Sign Up")
             .navigationBarHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
             .padding()
         
 
