@@ -9,21 +9,21 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    
-    
-    init() {
-        UITabBar.appearance().barTintColor = .systemBackground
-    }
-    
-    @State var selectedIndex = 0
-    
-    var body: some View{
-        VStack{
-            ZStack{
-                
-            }
+    var body: some View {
+        NavigationView{
+            
+            onBoardingScreen()
+            
+            
+            
+            
+            
+            
+            
         }
     }
+   
+
     
 }
 

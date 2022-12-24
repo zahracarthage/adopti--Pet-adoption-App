@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct loginScreen: View {
     
@@ -18,7 +19,7 @@ struct loginScreen: View {
 
 
     var body: some View {
-        NavigationView{
+     
             
             
             
@@ -69,7 +70,28 @@ struct loginScreen: View {
                 .frame(maxWidth: .infinity, alignment: .trailing)
                        
             LargeButton(title: "Login", backgroundColor: Color("PrimaryPink"), foregroundColor: .white, action: {})
-                    
+                
+           
+                
+                SignInWithAppleButton(.signIn) { request in
+                    request.requestedScopes = [.fullName,.email]                } onCompletion: { result in
+                    switch result {
+                        case .success(let authResults):
+                            print("Authorisation successful")
+                            
+                            guard let credentials = authResults.credential as? ASAuthorizationAppleIDCredential,
+                                  
+                                    let identityToken = credentials.identityToken,
+                                    let identityTokenString = String(data: identityToken, encoding: .utf8) else { return }
+                            let body = ["appleIdentityToken": identityTokenString]
+                            guard let jsonData = try? JSONEncoder().encode(body) else { return }
+                            
+                        case .failure(let error):
+                            print("Authorisation failed: \(error.localizedDescription)")
+                    }
+                    }.signInWithAppleButtonStyle(.black)
+                    .frame(width: .infinity, height: 55, alignment: .center)
+
                     
             }
            
@@ -111,11 +133,27 @@ struct loginScreen: View {
          .navigationBarTitleDisplayMode(.inline)
                
             
-        }  .padding()
-            
+        }
+  /*
+    private func showAppleLoginView() {
+        SignInWithAppleViewModel = SignInWithAppleViewModel()
+        
+        // 1. Instantiate the AuthorizationAppleIDProvider
+        let provider = ASAuthorizationAppleIDProvider()
+        // 2. Create a request with the help of provider - ASAuthorizationAppleIDRequest
+        let request = provider.createRequest()
+        // 3. Scope to contact information to be requested from the user during authentication.
+        request.requestedScopes = [.fullName, .email]
+        // 4. A controller that manages authorization requests created by a provider.
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        // 5. Set delegate to perform action
+        controller.delegate = signInWithAppleViewModel
+        // 6. Initiate the authorization flows.
+        controller.performRequests()
+    }*/
             
         
-    }
+    
 }
 
 struct loginScreen_Previews: PreviewProvider {
@@ -126,3 +164,14 @@ struct loginScreen_Previews: PreviewProvider {
 
 
 
+struct QuickSignInWithApple: UIViewRepresentable {
+    typealias UIViewType = ASAuthorizationAppleIDButton
+    
+    func makeUIView(context: Context) -> UIViewType {
+        return ASAuthorizationAppleIDButton()
+        // or just use UIViewType() 😊 Not recommanded though.
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+    }
+}
